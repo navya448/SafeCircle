@@ -178,7 +178,7 @@ export function SOSButton() {
       tabIndex={0}
     >
       <div
-        className="absolute inset-0 rounded-full bg-accent/20"
+        className="absolute inset-0 rounded-full bg-red-500/20"
         style={{
           transform: `scale(${progress / 100})`,
           transition: status === 'arming' ? 'transform 0.02s linear' : 'transform 0.5s ease-out',
@@ -188,8 +188,9 @@ export function SOSButton() {
         className={cn(
           'relative w-56 h-56 md:w-64 md:h-64 rounded-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl',
           {
-            'bg-accent hover:bg-purple-500': status === 'idle' || status === 'arming',
-            'bg-red-500 animate-pulse': status === 'sending',
+            'bg-primary hover:bg-primary/90': status === 'idle',
+            'bg-destructive scale-105': status === 'arming',
+            'bg-destructive animate-pulse': status === 'sending',
             'bg-green-500': status === 'sent',
             'bg-gray-500': status === 'error',
           }
