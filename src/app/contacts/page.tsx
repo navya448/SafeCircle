@@ -84,7 +84,7 @@ export default function ContactsPage() {
         }
     });
 
-    setContacts(userContacts.length > 0 ? userContacts : defaultContacts);
+    setContacts(combinedContacts);
   }, [])
 
   const updateLocalStorage = (updatedContacts: Contact[]) => {

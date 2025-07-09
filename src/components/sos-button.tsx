@@ -17,6 +17,11 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast'
 
+const defaultContacts = [
+    { id: 1, name: 'Campus Security', relationship: 'Security', email: 'security@snu.edu.in' },
+    { id: 2, name: 'University Health Center', relationship: 'Medical', email: 'health.center@snu.edu.in' },
+]
+
 export function SOSButton() {
   const [status, setStatus] = useState<'idle' | 'arming' | 'sending' | 'sent' | 'error'>('idle')
   const [progress, setProgress] = useState(0)
@@ -58,10 +63,14 @@ export function SOSButton() {
         return;
     }
 
-    const { name: userName, emergencyContacts } = JSON.parse(userDataString);
-    const contactEmails = emergencyContacts?.map((c: any) => c.email) || [];
+    const { name: userName, emergencyContacts: personalContacts } = JSON.parse(userDataString);
+    
+    const personalContactEmails = personalContacts?.map((c: any) => c.email) || [];
+    const defaultContactEmails = defaultContacts.map(c => c.email);
+    const allContactEmails = [...new Set([...personalContactEmails, ...defaultContactEmails])];
 
-    if (!contactEmails || contactEmails.length === 0) {
+
+    if (allContactEmails.length === 0) {
         toast({
             title: 'No Emergency Contacts',
             description: 'Please add an emergency contact in your settings.',
@@ -72,14 +81,14 @@ export function SOSButton() {
         return;
     }
     
-    setEmergencyContactEmails(contactEmails);
+    setEmergencyContactEmails(allContactEmails);
 
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const result = await sendSOSEmail({ latitude, longitude, userName, emergencyContacts: contactEmails });
+          const result = await sendSOSEmail({ latitude, longitude, userName, emergencyContacts: allContactEmails });
           if (result.success) {
             setShowConfirmation(true);
             setStatus('sent');
