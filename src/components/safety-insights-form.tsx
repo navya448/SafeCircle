@@ -1,6 +1,7 @@
+
 "use client"
 
-import { useState } from 'react'
+import { useState, useImperativeHandle, forwardRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -34,7 +35,11 @@ const formSchema = z.object({
   policeBlotterData: z.string().min(1, 'Please provide police blotter data.'),
 })
 
-export function SafetyInsightsForm() {
+export interface SafetyInsightsFormHandle {
+  setRouteDescription: (description: string) => void;
+}
+
+export const SafetyInsightsForm = forwardRef<SafetyInsightsFormHandle, {}>((props, ref) => {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<SafetyInsightsOutput | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -47,6 +52,12 @@ export function SafetyInsightsForm() {
       policeBlotterData: 'Recent reports of speeding on NH-91 near the university exit. A case of chain snatching was reported in a nearby sector last week.',
     },
   })
+
+  useImperativeHandle(ref, () => ({
+    setRouteDescription(description: string) {
+      form.setValue('routeDescription', description)
+    }
+  }));
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true)
@@ -163,4 +174,5 @@ export function SafetyInsightsForm() {
       )}
     </Card>
   )
-}
+});
+SafetyInsightsForm.displayName = 'SafetyInsightsForm';
