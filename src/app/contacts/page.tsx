@@ -57,7 +57,7 @@ interface Contact {
 
 const defaultContacts: Contact[] = [
     { id: 1, name: 'Campus Security', relationship: 'Security', email: 'security@snu.edu.in' },
-    { id: 2, name: 'University Health Center', relationship: 'Medical', email: 'health.center@snu.edu.in' },
+    { id: 2, name: 'Police Station', relationship: 'Police', email: 'police.noida@example.com' },
 ]
 
 
