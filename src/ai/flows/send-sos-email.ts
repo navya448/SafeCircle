@@ -32,12 +32,8 @@ const sendSOSEmailFlow = ai.defineFlow(
     outputSchema: SOSOutputSchema,
   },
   async (input) => {
-    const { latitude, longitude } = input;
+    const { latitude, longitude, userName, emergencyContacts } = input;
     
-    // In a real app, you would fetch user details and emergency contacts
-    const userName = "A SafeCircle User";
-    const emergencyContacts = ["emergency.services@example.com"]; // Placeholder
-
     const subject = `SOS Alert from ${userName}`;
     const mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
     const body = `
@@ -58,7 +54,7 @@ const sendSOSEmailFlow = ai.defineFlow(
         return { success: true };
     } catch (error) {
         console.error("Failed to send SOS email:", error);
-        return { success: false };
+        return { success: false, message: (error as Error).message };
     }
   }
 );

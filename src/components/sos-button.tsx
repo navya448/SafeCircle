@@ -5,12 +5,14 @@ import { cn } from '@/lib/utils'
 import { useToast } from '@/hooks/use-toast'
 import { Siren } from 'lucide-react'
 import { sendSOSEmail } from '@/ai/flows/send-sos-email'
+import { useRouter } from 'next/navigation'
 
 export function SOSButton() {
   const [status, setStatus] = useState<'idle' | 'arming' | 'sending' | 'sent' | 'error'>('idle')
   const [progress, setProgress] = useState(0)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const { toast } = useToast()
+  const router = useRouter()
 
   const handleMouseDown = () => {
     if (status === 'idle' || status === 'sent' || status === 'error') {
@@ -31,15 +33,41 @@ export function SOSButton() {
 
   const triggerSOS = () => {
     setStatus('sending');
+
+    const userDataString = localStorage.getItem('safeCircleUser');
+    if (!userDataString) {
+        toast({
+            title: 'Not Signed In',
+            description: 'Please sign up to use the SOS feature.',
+            variant: 'destructive',
+        });
+        router.push('/signup');
+        setStatus('error');
+        return;
+    }
+
+    const { name: userName, emergencyContacts } = JSON.parse(userDataString);
+
+    if (!emergencyContacts || emergencyContacts.length === 0) {
+        toast({
+            title: 'No Emergency Contacts',
+            description: 'Please add an emergency contact in your settings.',
+            variant: 'destructive',
+        });
+        setStatus('error');
+        return;
+    }
+
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const result = await sendSOSEmail({ latitude, longitude });
+          const result = await sendSOSEmail({ latitude, longitude, userName, emergencyContacts });
           if (result.success) {
             toast({
               title: 'SOS Alert Activated',
-              description: 'Your location and emergency alert have been sent to your trusted contacts and campus security.',
+              description: `Your location and alert have been sent to: ${emergencyContacts.join(', ')}.`,
               variant: 'destructive',
             });
             setStatus('sent');

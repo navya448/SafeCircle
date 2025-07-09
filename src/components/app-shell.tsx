@@ -29,6 +29,11 @@ const navItems = [
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
+  if (pathname === '/signup') {
+    return <main>{children}</main>;
+  }
+
+
   return (
     <SidebarProvider>
       <Sidebar>
