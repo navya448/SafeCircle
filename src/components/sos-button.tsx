@@ -2,14 +2,25 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
-import { useToast } from '@/hooks/use-toast'
 import { Siren } from 'lucide-react'
 import { sendSOSEmail } from '@/ai/flows/send-sos-email'
 import { useRouter } from 'next/navigation'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { useToast } from '@/hooks/use-toast'
 
 export function SOSButton() {
   const [status, setStatus] = useState<'idle' | 'arming' | 'sending' | 'sent' | 'error'>('idle')
   const [progress, setProgress] = useState(0)
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [emergencyContacts, setEmergencyContacts] = useState<string[]>([])
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const { toast } = useToast()
   const router = useRouter()
@@ -46,14 +57,16 @@ export function SOSButton() {
         return;
     }
 
-    const { name: userName, emergencyContacts } = JSON.parse(userDataString);
+    const { name: userName, emergencyContacts: storedContacts } = JSON.parse(userDataString);
+    setEmergencyContacts(storedContacts || []);
 
-    if (!emergencyContacts || emergencyContacts.length === 0) {
+    if (!storedContacts || storedContacts.length === 0) {
         toast({
             title: 'No Emergency Contacts',
             description: 'Please add an emergency contact in your settings.',
             variant: 'destructive',
         });
+        router.push('/contacts');
         setStatus('error');
         return;
     }
@@ -63,16 +76,12 @@ export function SOSButton() {
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const result = await sendSOSEmail({ latitude, longitude, userName, emergencyContacts });
+          const result = await sendSOSEmail({ latitude, longitude, userName, emergencyContacts: storedContacts });
           if (result.success) {
-            toast({
-              title: 'SOS Alert Activated',
-              description: `Your location and alert have been sent to: ${emergencyContacts.join(', ')}.`,
-              variant: 'destructive',
-            });
+            setShowConfirmation(true);
             setStatus('sent');
           } else {
-            throw new Error('Flow returned success: false');
+            throw new Error(result.message || 'Flow returned success: false');
           }
         } catch (error) {
           console.error('Failed to send SOS alert:', error);
@@ -145,6 +154,7 @@ export function SOSButton() {
   }
 
   return (
+    <>
     <div
       className="relative w-64 h-64 md:w-72 md:h-72 rounded-full flex items-center justify-center select-none"
       onMouseDown={handleMouseDown}
@@ -177,5 +187,23 @@ export function SOSButton() {
         <span className="text-white font-bold text-xl md:text-2xl mt-2 text-center">{getButtonText()}</span>
       </div>
     </div>
+    <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+            <AlertDialogHeader>
+            <AlertDialogTitle>SOS Alert Activated!</AlertDialogTitle>
+            <AlertDialogDescription>
+                Help is on the way. An alert with your location has been sent to your emergency contacts: <span className="font-medium text-foreground">{emergencyContacts.join(', ')}</span>. Please move to a safe location if possible.
+                <br /><br />
+                <span className="text-xs text-muted-foreground">(This is a simulation. In a real app, an email/SMS would be sent.)</span>
+            </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setShowConfirmation(false)}>
+                Okay
+            </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
+    </>
   )
 }

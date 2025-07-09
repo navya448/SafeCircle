@@ -6,12 +6,14 @@
  */
 
 import {ai} from '@/ai/genkit';
-import { SOSInputSchema, type SOSInput, SOSOutputSchema, type SOSOutput } from '@/ai/schemas/sos-schema';
+import { SOSInputSchema, type SOSInput, SOSOutputSchema } from '@/ai/schemas/sos-schema';
 
 // This is a placeholder for a real email sending service.
 // In a real application, you would integrate with a service like SendGrid, Nodemailer, etc.
+// This function SIMULATES sending an email by logging it to the console.
 async function sendEmail(to: string, subject: string, body: string) {
     console.log('------- EMAIL SIMULATION -------');
+    console.log('This is not a real email. In a production app, this would be sent to a real email address.');
     console.log(`To: ${to}`);
     console.log(`Subject: ${subject}`);
     console.log(`Body: ${body}`);
@@ -21,7 +23,7 @@ async function sendEmail(to: string, subject: string, body: string) {
 }
 
 
-export async function sendSOSEmail(input: SOSInput): Promise<SOSOutput> {
+export async function sendSOSEmail(input: SOSInput) {
   return sendSOSEmailFlow(input);
 }
 

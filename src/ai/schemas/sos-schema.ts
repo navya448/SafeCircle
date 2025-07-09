@@ -14,5 +14,6 @@ export type SOSInput = z.infer<typeof SOSInputSchema>;
 
 export const SOSOutputSchema = z.object({
   success: z.boolean(),
+  message: z.string().optional(),
 });
 export type SOSOutput = z.infer<typeof SOSOutputSchema>;
