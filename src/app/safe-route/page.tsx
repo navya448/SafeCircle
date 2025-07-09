@@ -2,7 +2,7 @@
 "use client"
 
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   Card,
   CardContent,
@@ -23,16 +23,25 @@ import { Button } from '@/components/ui/button'
 import { SafetyInsightsForm, type SafetyInsightsFormHandle } from '@/components/safety-insights-form'
 
 export default function SafeRoutePage() {
-  const [start, setStart] = useState('')
+  const [start, setStart] = useState('My Current Location')
   const [destination, setDestination] = useState('')
   const [mapUrl, setMapUrl] = useState('https://placehold.co/800x400.png')
   const safetyInsightsFormRef = useRef<SafetyInsightsFormHandle>(null)
+
+  useEffect(() => {
+    // Set a default route description when the page loads
+    if (start && destination) {
+        const routeDescription = `Walking from ${start} to ${destination} on campus.`
+        safetyInsightsFormRef.current?.setRouteDescription(routeDescription)
+    }
+  }, [start, destination]);
+
 
   const handleFindRoute = (e: React.FormEvent) => {
     e.preventDefault()
     if (start && destination) {
       // Simulate finding a route by updating the map image
-      setMapUrl('https://placehold.co/800x400.png?text=Route+from+'+encodeURIComponent(start)+'+to+'+encodeURIComponent(destination))
+      setMapUrl(`https://placehold.co/800x400.png?text=Route+from+${encodeURIComponent(start)}+to+${encodeURIComponent(destination)}`)
       
       // Update the description in the safety insights form
       const routeDescription = `Walking from ${start} to ${destination} on campus.`
@@ -65,6 +74,7 @@ export default function SafeRoutePage() {
                         value={start}
                         onChange={(e) => setStart(e.target.value)}
                         required
+                        disabled
                       />
                     </div>
                     <div className="space-y-2">
@@ -83,6 +93,7 @@ export default function SafeRoutePage() {
                           <SelectItem value="Academic Block C">Academic Block C</SelectItem>
                           <SelectItem value="Student Health Center">Student Health Center</SelectItem>
                           <SelectItem value="Sports Complex">Sports Complex</SelectItem>
+                          <SelectItem value="Police Station">Police Station</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
