@@ -4,15 +4,16 @@ import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/hooks/use-toast'
 import { Siren } from 'lucide-react'
+import { sendSOSEmail } from '@/ai/flows/send-sos-email'
 
 export function SOSButton() {
-  const [status, setStatus] = useState<'idle' | 'arming' | 'sending' | 'sent'>('idle')
+  const [status, setStatus] = useState<'idle' | 'arming' | 'sending' | 'sent' | 'error'>('idle')
   const [progress, setProgress] = useState(0)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const { toast } = useToast()
 
   const handleMouseDown = () => {
-    if (status === 'idle' || status === 'sent') {
+    if (status === 'idle' || status === 'sent' || status === 'error') {
       setStatus('arming')
     }
   }
@@ -28,6 +29,46 @@ export function SOSButton() {
     }
   }
 
+  const triggerSOS = () => {
+    setStatus('sending');
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const result = await sendSOSEmail({ latitude, longitude });
+          if (result.success) {
+            toast({
+              title: 'SOS Alert Activated',
+              description: 'Your location and emergency alert have been sent to your trusted contacts and campus security.',
+              variant: 'destructive',
+            });
+            setStatus('sent');
+          } else {
+            throw new Error('Flow returned success: false');
+          }
+        } catch (error) {
+          console.error('Failed to send SOS alert:', error);
+          toast({
+            title: 'Error Sending Alert',
+            description: 'Could not send the SOS alert. Please try again or contact support.',
+            variant: 'destructive',
+          });
+          setStatus('error');
+        }
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        toast({
+          title: 'Location Error',
+          description: 'Could not get your location. Please enable location services.',
+          variant: 'destructive',
+        });
+        setStatus('error');
+      }
+    );
+  };
+
+
   useEffect(() => {
     if (status === 'arming') {
       timerRef.current = setInterval(() => {
@@ -35,12 +76,20 @@ export function SOSButton() {
           if (prev >= 100) {
             clearInterval(timerRef.current!)
             timerRef.current = null
-            setStatus('sending')
+            triggerSOS()
             return 100
           }
           return prev + 1
         })
       }, 20)
+    }
+    
+    if (status === 'sent' || status === 'error') {
+        const resetTimer = setTimeout(() => {
+            setStatus('idle');
+            setProgress(0);
+        }, 6000);
+        return () => clearTimeout(resetTimer);
     }
 
     return () => {
@@ -49,23 +98,6 @@ export function SOSButton() {
       }
     }
   }, [status])
-
-  useEffect(() => {
-    if (status === 'sending') {
-      toast({
-        title: 'SOS Alert Activated',
-        description: 'Your location and emergency alert have been sent to your trusted contacts and campus security.',
-        variant: 'destructive',
-      })
-      setTimeout(() => {
-        setStatus('sent')
-      }, 1500)
-      setTimeout(() => {
-        setStatus('idle')
-        setProgress(0)
-      }, 6000)
-    }
-  }, [status, toast])
 
   const getButtonText = () => {
     switch (status) {
@@ -77,6 +109,8 @@ export function SOSButton() {
         return 'Sending Alert...'
       case 'sent':
         return 'Alert Sent'
+      case 'error':
+        return 'Failed'
       default:
         return 'SOS'
     }
@@ -107,6 +141,7 @@ export function SOSButton() {
             'bg-accent hover:bg-purple-500': status === 'idle' || status === 'arming',
             'bg-red-500 animate-pulse': status === 'sending',
             'bg-green-500': status === 'sent',
+            'bg-gray-500': status === 'error',
           }
         )}
       >

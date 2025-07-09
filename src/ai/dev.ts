@@ -2,3 +2,4 @@ import { config } from 'dotenv';
 config();
 
 import '@/ai/flows/safety-insights.ts';
+import '@/ai/flows/send-sos-email.ts';
