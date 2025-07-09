@@ -43,8 +43,8 @@ export function SafetyInsightsForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       routeDescription: '',
-      campusSecurityReports: 'Recent incidents: a few noise complaints, one instance of petty theft near the dorms on the east side of campus.',
-      policeBlotterData: 'General area reports: traffic violation on Main St, public intoxication arrest 2 miles from campus.',
+      campusSecurityReports: 'Minor incident of a bike being misplaced near DH-1. Reports of unauthorized vendors near the campus perimeter.',
+      policeBlotterData: 'Recent reports of speeding on NH-91 near the university exit. A case of chain snatching was reported in a nearby sector last week.',
     },
   })
 
