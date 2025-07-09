@@ -10,7 +10,7 @@ export default function DashboardPage() {
     <div className="flex flex-col items-center justify-center p-4 md:p-8 space-y-8 min-h-full">
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-4">
-          <Logo className="w-12 h-12" />
+          <Logo className="w-12 h-12 text-primary" />
           <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">
             SafeCircle
           </h1>
