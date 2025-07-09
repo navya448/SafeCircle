@@ -30,7 +30,9 @@ import { Loader2 } from 'lucide-react'
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  emergencyEmail: z.string().email({ message: 'Please enter a valid email address.' }),
+  emergencyContactName: z.string().min(2, { message: 'Contact name must be at least 2 characters.' }),
+  emergencyContactRelationship: z.string().min(2, { message: 'Relationship must be at least 2 characters.' }),
+  emergencyContactEmail: z.string().email({ message: 'Please enter a valid email address.' }),
 })
 
 export default function SignUpPage() {
@@ -42,7 +44,9 @@ export default function SignUpPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      emergencyEmail: '',
+      emergencyContactName: '',
+      emergencyContactRelationship: '',
+      emergencyContactEmail: '',
     },
   })
 
@@ -53,7 +57,12 @@ export default function SignUpPage() {
       // Here, we'll use localStorage for simplicity.
       const userData = {
         name: values.name,
-        emergencyContacts: [values.emergencyEmail], // Storing as an array for future-proofing
+        emergencyContacts: [{
+          id: Date.now(),
+          name: values.emergencyContactName,
+          relationship: values.emergencyContactRelationship,
+          email: values.emergencyContactEmail
+        }],
       }
       localStorage.setItem('safeCircleUser', JSON.stringify(userData))
       
@@ -100,12 +109,38 @@ export default function SignUpPage() {
                   </FormItem>
                 )}
               />
-              <FormField
+               <FormField
                 control={form.control}
-                name="emergencyEmail"
+                name="emergencyContactName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Emergency Contact Email</FormLabel>
+                    <FormLabel>Emergency Contact's Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., John Smith" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="emergencyContactRelationship"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Relationship</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Friend, Parent" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="emergencyContactEmail"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Emergency Contact's Email</FormLabel>
                     <FormControl>
                       <Input type="email" placeholder="e.g., contact@example.com" {...field} />
                     </FormControl>

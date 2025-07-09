@@ -1,3 +1,4 @@
+
 "use client"
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -68,36 +69,31 @@ export default function ContactsPage() {
 
   useEffect(() => {
     const userDataString = localStorage.getItem('safeCircleUser')
+    let userContacts: Contact[] = [];
     if (userDataString) {
-      const userData = JSON.parse(userDataString)
-      // Combine default contacts with user's saved contacts
-      const userContacts = userData.emergencyContacts?.map((email: string, index: number) => ({
-        id: Date.now() + index, // Ensure unique ID
-        name: 'Emergency Contact', // Placeholder name
-        relationship: 'Personal', // Placeholder relationship
-        email: email
-      })) || []
-
-      const combined = [...defaultContacts, ...userContacts]
-      
-      // A bit of logic to merge primary contact from signup if it exists
-      const primaryEmail = userData.emergencyContacts?.[0]
-      if (primaryEmail && !defaultContacts.some(c => c.email === primaryEmail)) {
-          // This part is tricky without a full backend. We will just add it.
-      }
-      
-      setContacts(userContacts.length > 0 ? userContacts : defaultContacts)
-
-    } else {
-        setContacts(defaultContacts)
+      const userData = JSON.parse(userDataString);
+      // User contacts are now stored as an array of objects
+      userContacts = userData.emergencyContacts || [];
     }
+    // Combine university contacts with user's saved contacts
+    // ensuring no duplicates if user adds a default one.
+    const combinedContacts = [...defaultContacts];
+    userContacts.forEach(uc => {
+        if (!combinedContacts.some(dc => dc.email === uc.email)) {
+            combinedContacts.push(uc);
+        }
+    });
+
+    setContacts(userContacts.length > 0 ? userContacts : defaultContacts);
   }, [])
 
   const updateLocalStorage = (updatedContacts: Contact[]) => {
      const userDataString = localStorage.getItem('safeCircleUser');
      if (userDataString) {
         const userData = JSON.parse(userDataString);
-        userData.emergencyContacts = updatedContacts.map(c => c.email);
+        // We only store personal contacts, not the default ones.
+        const personalContacts = updatedContacts.filter(c => !defaultContacts.some(dc => dc.id === c.id));
+        userData.emergencyContacts = personalContacts;
         localStorage.setItem('safeCircleUser', JSON.stringify(userData));
      }
   }
@@ -135,6 +131,11 @@ export default function ContactsPage() {
   }
 
   const handleDelete = (contactId: number) => {
+    const isDefaultContact = defaultContacts.some(c => c.id === contactId);
+    if (isDefaultContact) {
+        toast({ title: "Cannot Delete", description: "Default contacts cannot be deleted.", variant: 'destructive' })
+        return;
+    }
     const updatedContacts = contacts.filter((c) => c.id !== contactId)
     setContacts(updatedContacts)
     updateLocalStorage(updatedContacts)
@@ -218,7 +219,7 @@ export default function ContactsPage() {
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" disabled={defaultContacts.some(c => c.id === contact.id)}>
                           <MoreVertical className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>

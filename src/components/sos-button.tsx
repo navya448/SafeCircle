@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useEffect, useRef } from 'react'
@@ -20,7 +21,7 @@ export function SOSButton() {
   const [status, setStatus] = useState<'idle' | 'arming' | 'sending' | 'sent' | 'error'>('idle')
   const [progress, setProgress] = useState(0)
   const [showConfirmation, setShowConfirmation] = useState(false)
-  const [emergencyContacts, setEmergencyContacts] = useState<string[]>([])
+  const [emergencyContactEmails, setEmergencyContactEmails] = useState<string[]>([])
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const { toast } = useToast()
   const router = useRouter()
@@ -57,10 +58,10 @@ export function SOSButton() {
         return;
     }
 
-    const { name: userName, emergencyContacts: storedContacts } = JSON.parse(userDataString);
-    setEmergencyContacts(storedContacts || []);
+    const { name: userName, emergencyContacts } = JSON.parse(userDataString);
+    const contactEmails = emergencyContacts?.map((c: any) => c.email) || [];
 
-    if (!storedContacts || storedContacts.length === 0) {
+    if (!contactEmails || contactEmails.length === 0) {
         toast({
             title: 'No Emergency Contacts',
             description: 'Please add an emergency contact in your settings.',
@@ -70,13 +71,15 @@ export function SOSButton() {
         setStatus('error');
         return;
     }
+    
+    setEmergencyContactEmails(contactEmails);
 
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const result = await sendSOSEmail({ latitude, longitude, userName, emergencyContacts: storedContacts });
+          const result = await sendSOSEmail({ latitude, longitude, userName, emergencyContacts: contactEmails });
           if (result.success) {
             setShowConfirmation(true);
             setStatus('sent');
@@ -192,7 +195,7 @@ export function SOSButton() {
             <AlertDialogHeader>
             <AlertDialogTitle>SOS Alert Activated!</AlertDialogTitle>
             <AlertDialogDescription>
-                Help is on the way. An alert with your location has been sent to your emergency contacts: <span className="font-medium text-foreground">{emergencyContacts.join(', ')}</span>. Please move to a safe location if possible.
+                Help is on the way. An alert with your location has been sent to your emergency contacts: <span className="font-medium text-foreground">{emergencyContactEmails.join(', ')}</span>. Please move to a safe location if possible.
                 <br /><br />
                 <span className="text-xs text-muted-foreground">(This is a simulation. In a real app, an email/SMS would be sent.)</span>
             </AlertDialogDescription>
