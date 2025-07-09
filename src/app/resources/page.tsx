@@ -24,13 +24,13 @@ const resources = [
   {
     name: 'Women\'s Safety Helpline',
     description: 'Confidential support and resources.',
-    phone: '234-567-8901',
+    phone: '1091',
     icon: HeartHandshake,
   },
   {
     name: 'Mental Health Crisis Line',
     description: '24/7 support for mental health emergencies.',
-    phone: '345-678-9012',
+    phone: '1800-599-0019',
     icon: Phone,
   },
 ];
