@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/form'
 import { AlertTriangle, CheckCircle, Loader2 } from 'lucide-react'
 import { Badge } from './ui/badge'
+import { cn } from '@/lib/utils'
 
 const formSchema = z.object({
   routeDescription: z.string().min(10, 'Please provide a more detailed route description.'),
@@ -64,9 +65,9 @@ export function SafetyInsightsForm() {
 
   const RiskBadge = ({ level }: { level: 'low' | 'medium' | 'high' }) => {
     const variants = {
-      low: 'bg-green-100 text-green-800 border-green-200',
-      medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      high: 'bg-red-100 text-red-800 border-red-200',
+      low: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/50 dark:text-green-200 dark:border-green-800',
+      medium: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-200 dark:border-yellow-800',
+      high: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/50 dark:text-red-200 dark:border-red-800',
     }
     const icons = {
       low: <CheckCircle className="h-4 w-4 mr-1" />,
@@ -74,7 +75,7 @@ export function SafetyInsightsForm() {
       high: <AlertTriangle className="h-4 w-4 mr-1" />,
     }
     return (
-      <Badge className={cn('capitalize text-sm', variants[level])}>
+      <Badge className={cn('capitalize text-sm font-medium', variants[level])} variant="outline">
         {icons[level]}
         {level} Risk
       </Badge>
@@ -132,7 +133,7 @@ export function SafetyInsightsForm() {
               )}
             />
           </CardContent>
-          <CardFooter className="flex flex-col">
+          <CardFooter className="flex flex-col items-start">
             <Button type="submit" disabled={loading} className="w-full">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {loading ? 'Analyzing...' : 'Get Safety Insights'}
@@ -143,11 +144,12 @@ export function SafetyInsightsForm() {
       </Form>
       {result && (
         <CardContent>
-          <div className="space-y-4 p-4 border rounded-lg bg-background">
-            <h3 className="font-bold text-lg">Assessment Result</h3>
-            <div className="flex items-center">
+          <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
+            <h3 className="font-bold text-lg flex items-center justify-between">
+              <span>Assessment Result</span>
               <RiskBadge level={result.riskLevel} />
-            </div>
+            </h3>
+            
             <div>
               <h4 className="font-semibold">Risk Factors</h4>
               <p className="text-sm text-muted-foreground">{result.riskFactors}</p>
