@@ -4,7 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import AppShell from '@/components/app-shell';
 
 export const metadata: Metadata = {
-  title: 'Guardian Angel',
+  title: 'SafeCircle',
   description: 'Your personal safety companion',
 };
 

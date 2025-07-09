@@ -37,7 +37,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <Button variant="ghost" size="icon" className="h-9 w-9">
                 <Shield className="w-6 h-6 text-primary" />
             </Button>
-            <span className="text-lg font-semibold text-primary group-data-[collapsible=icon]:hidden">Guardian Angel</span>
+            <span className="text-lg font-semibold text-primary group-data-[collapsible=icon]:hidden">SafeCircle</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -58,13 +58,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter className="group-data-[collapsible=icon]:hidden">
-          <p className="text-xs text-muted-foreground">&copy; 2024 Guardian Angel</p>
+          <p className="text-xs text-muted-foreground">&copy; 2024 SafeCircle</p>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
         <header className="flex items-center justify-between p-2 border-b md:justify-end">
             <SidebarTrigger className="md:hidden" />
-            <span className="font-semibold text-primary md:hidden">Guardian Angel</span>
+            <span className="font-semibold text-primary md:hidden">SafeCircle</span>
             <div />
         </header>
         <main className="min-h-[calc(100vh-4rem)] bg-background">

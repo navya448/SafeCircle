@@ -9,7 +9,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col items-center justify-center p-4 md:p-8 space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-primary">Guardian Angel</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-primary">SafeCircle</h1>
         <p className="text-muted-foreground mt-2">Your personal safety companion. Help is one tap away.</p>
       </div>
 
