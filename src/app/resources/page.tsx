@@ -12,7 +12,13 @@ const resources = [
   {
     name: 'Local Police Department',
     description: 'For off-campus or serious emergencies.',
-    phone: '911',
+    phone: '100',
+    icon: ShieldAlert,
+  },
+  {
+    name: 'National Emergency Number',
+    description: 'For any emergency situation.',
+    phone: '112',
     icon: ShieldAlert,
   },
   {

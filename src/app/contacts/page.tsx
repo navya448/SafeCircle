@@ -36,8 +36,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 const initialContacts = [
-  { id: 1, name: 'Jane Doe', relationship: 'Mother', phone: '(123) 456-7890' },
-  { id: 2, name: 'John Smith', relationship: 'Friend', phone: '(098) 765-4321' },
+  { id: 1, name: 'Priya Sharma', relationship: 'Mother', phone: '(123) 456-7890' },
+  { id: 2, name: 'Navya Jain', relationship: 'Friend', phone: '(098) 765-4321' },
   { id: 3, name: 'Campus Security', relationship: 'Security', phone: '(555) 555-5555' },
 ]
 
