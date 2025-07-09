@@ -1,22 +1,27 @@
 import { SOSButton } from '@/components/sos-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MapPin, Users, Shield, Phone } from 'lucide-react';
+import { MapPin, Users, Phone } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { Logo } from '@/components/logo';
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col items-center justify-center p-4 md:p-8 space-y-8">
-      <div className="text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-primary">SafeCircle</h1>
-        <p className="text-muted-foreground mt-2">Your personal safety companion. Help is one tap away.</p>
+    <div className="flex flex-col items-center justify-center p-4 md:p-8 space-y-8 min-h-full">
+      <div className="text-center space-y-4">
+        <div className="inline-flex items-center gap-4">
+          <Logo className="w-12 h-12" />
+          <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">
+            SafeCircle
+          </h1>
+        </div>
+        <p className="text-muted-foreground text-lg">Your personal safety companion. Help is one tap away.</p>
       </div>
 
       <SOSButton />
 
       <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card className="shadow-lg hover:shadow-xl transition-shadow">
+        <Card className="shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MapPin className="text-primary" />
@@ -31,7 +36,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg hover:shadow-xl transition-shadow">
+        <Card className="shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="text-primary" />
@@ -46,7 +51,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg hover:shadow-xl transition-shadow md:col-span-2 lg:col-span-1">
+        <Card className="shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 md:col-span-2 lg:col-span-1">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Phone className="text-primary" />

@@ -3,7 +3,8 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, MapPin, Users, Phone, Shield } from 'lucide-react'
+import { Home, MapPin, Users, Phone } from 'lucide-react'
+import { Logo } from '@/components/logo';
 
 import {
   SidebarProvider,
@@ -30,7 +31,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
   if (pathname === '/signup') {
-    return <main>{children}</main>;
+    return <main className="bg-slate-50 dark:bg-slate-950">{children}</main>;
   }
 
 
@@ -39,8 +40,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-9 w-9">
-                <Shield className="w-6 h-6 text-primary" />
+            <Button asChild variant="ghost" size="icon" className="h-10 w-10">
+                <Link href="/">
+                  <Logo className="w-8 h-8 text-primary" />
+                </Link>
             </Button>
             <span className="text-lg font-semibold text-primary group-data-[collapsible=icon]:hidden">SafeCircle</span>
           </div>
@@ -67,12 +70,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center justify-between p-2 border-b md:justify-end">
+        <header className="flex items-center justify-between p-2 border-b md:justify-end bg-background/50 backdrop-blur-sm sticky top-0 z-10">
             <SidebarTrigger className="md:hidden" />
-            <span className="font-semibold text-primary md:hidden">SafeCircle</span>
+             <div className="flex items-center gap-2 md:hidden">
+              <Logo className="w-7 h-7 text-primary" />
+              <span className="font-semibold text-primary">SafeCircle</span>
+            </div>
             <div />
         </header>
-        <main className="min-h-[calc(100vh-4rem)] bg-background">
+        <main className="min-h-[calc(100vh-4rem)] bg-background/80">
             {children}
         </main>
       </SidebarInset>

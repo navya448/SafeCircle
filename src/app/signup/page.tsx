@@ -16,7 +16,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Form,
   FormControl,
@@ -27,6 +26,7 @@ import {
 } from '@/components/ui/form'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
+import { Logo } from '@/components/logo'
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -85,17 +85,21 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Welcome to SafeCircle</CardTitle>
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <Card className="w-full max-w-md shadow-2xl">
+        <CardHeader className="text-center space-y-2">
+           <div className="mx-auto flex items-center gap-3">
+              <Logo className="w-10 h-10 text-primary" />
+              <CardTitle className="text-3xl font-bold tracking-tight">SafeCircle</CardTitle>
+           </div>
           <CardDescription>
-            Create your account to get started.
+            Create your account to get started with your safety companion.
           </CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardContent className="space-y-4">
+               <h3 className="font-medium text-center">Your Details</h3>
               <FormField
                 control={form.control}
                 name="name"
@@ -109,12 +113,16 @@ export default function SignUpPage() {
                   </FormItem>
                 )}
               />
+               <div className="py-2">
+                 <hr/>
+               </div>
+               <h3 className="font-medium text-center">Your Primary Emergency Contact</h3>
                <FormField
                 control={form.control}
                 name="emergencyContactName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Emergency Contact's Name</FormLabel>
+                    <FormLabel>Contact's Name</FormLabel>
                     <FormControl>
                       <Input placeholder="e.g., John Smith" {...field} />
                     </FormControl>
@@ -140,7 +148,7 @@ export default function SignUpPage() {
                 name="emergencyContactEmail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Emergency Contact's Email</FormLabel>
+                    <FormLabel>Contact's Email</FormLabel>
                     <FormControl>
                       <Input type="email" placeholder="e.g., contact@example.com" {...field} />
                     </FormControl>
@@ -152,7 +160,7 @@ export default function SignUpPage() {
             <CardFooter>
               <Button type="submit" className="w-full" disabled={loading}>
                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {loading ? 'Signing Up...' : 'Sign Up'}
+                {loading ? 'Creating Account...' : 'Create Account'}
               </Button>
             </CardFooter>
           </form>
