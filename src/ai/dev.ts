@@ -3,3 +3,4 @@ config();
 
 import '@/ai/flows/safety-insights.ts';
 import '@/ai/flows/send-sos-email.ts';
+import '@/ai/flows/safety-chat.ts';

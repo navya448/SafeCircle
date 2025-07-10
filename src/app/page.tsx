@@ -1,7 +1,7 @@
 import { SOSButton } from '@/components/sos-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MapPin, Users, Phone } from 'lucide-react';
+import { MapPin, Users, Phone, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
 
@@ -20,7 +20,7 @@ export default function DashboardPage() {
 
       <SOSButton />
 
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         <Card className="shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -32,6 +32,21 @@ export default function DashboardPage() {
             <p className="text-muted-foreground mb-4">Find the safest path to your destination.</p>
             <Link href="/safe-route" passHref>
               <Button className="w-full">Plan Route</Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MessageCircle className="text-primary" />
+              <span>Safety Chat</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground mb-4">Ask the AI assistant for safety advice.</p>
+            <Link href="/safety-chat" passHref>
+              <Button className="w-full">Start Chat</Button>
             </Link>
           </CardContent>
         </Card>
@@ -51,7 +66,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 md:col-span-2 lg:col-span-1">
+        <Card className="shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Phone className="text-primary" />

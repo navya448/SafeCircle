@@ -1,9 +1,10 @@
+
 "use client"
 
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, MapPin, Users, Phone } from 'lucide-react'
+import { Home, MapPin, Users, Phone, MessageCircle } from 'lucide-react'
 import { Logo } from '@/components/logo';
 
 import {
@@ -23,6 +24,7 @@ import { Button } from './ui/button'
 const navItems = [
   { href: '/', label: 'Dashboard', icon: Home },
   { href: '/safe-route', label: 'Safe Route', icon: MapPin },
+  { href: '/safety-chat', label: 'Safety Chat', icon: MessageCircle },
   { href: '/contacts', label: 'Contacts', icon: Users },
   { href: '/resources', label: 'Resources', icon: Phone },
 ]
