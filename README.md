@@ -1,6 +1,6 @@
-## SafePath: Your Personal Safety Companion
+## SafeCircle: Your Personal Safety Companion
 
-SafePath is a comprehensive safety application built to empower users with tools and information to enhance their personal security. Whether you're navigating unfamiliar areas, need quick access to emergency contacts, or want to gain insights into potential risks, SafePath provides a centralized platform for your safety needs.
+SafeCirlce is a comprehensive safety application built to empower users with tools and information to enhance their personal security. Whether you're navigating unfamiliar areas, need quick access to emergency contacts, or want to gain insights into potential risks, SafePath provides a centralized platform for your safety needs.
 
 ## Features
 
@@ -20,6 +20,3 @@ SafePath is a comprehensive safety application built to empower users with tools
 - **Genkit:** AI framework for safety insights and route planning.
 - **TypeScript:** Typed superset of JavaScript for improved code quality.
 
-## Installation
-
-1. **Clone the repository:**
