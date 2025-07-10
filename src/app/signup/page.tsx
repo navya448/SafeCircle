@@ -88,11 +88,10 @@ export default function SignUpPage() {
   return (
     <div className="flex items-center justify-center min-h-screen relative">
       <Image 
-        src="https://placehold.co/1920x1080.png"
-        alt="Abstract background illustration"
+        src="[GENERATED_IMAGE_URL]"
+        alt="Illustration of a person walking on a campus at night, looking at their phone."
         fill
         className="object-cover z-0"
-        data-ai-hint="abstract background"
       />
        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10" />
       <Card className="w-full max-w-md shadow-2xl z-20">
