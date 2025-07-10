@@ -94,7 +94,7 @@ export default function SignUpPage() {
         className="object-cover z-0"
         data-ai-hint="night campus walk"
       />
-       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10" />
+       <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] z-10" />
       <Card className="w-full max-w-md shadow-2xl z-20">
         <CardHeader className="text-center space-y-2">
            <div className="mx-auto flex items-center gap-3">
