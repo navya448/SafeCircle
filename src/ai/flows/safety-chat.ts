@@ -25,9 +25,11 @@ const safetyChatFlow = ai.defineFlow(
   async (input) => {
     const { question, history } = input;
     
-    // We need to cast the history to the correct type for the `generate` call.
-    // The Zod schema ensures the structure is correct at runtime.
-    const typedHistory = history as { role: 'user' | 'model'; content: Part[] }[];
+    const typedHistory = history.map(h => ({
+      role: h.role,
+      content: h.content,
+    })) as { role: 'user' | 'model'; content: Part[] }[];
+
 
     const { output } = await ai.generate({
       prompt: question,
