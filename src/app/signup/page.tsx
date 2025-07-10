@@ -86,16 +86,18 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen relative">
-      <Image 
-        src="/img.png"
-        alt="Illustration of a person walking on a campus at night, looking at their phone."
-        fill
-        className="object-cover z-0"
-        data-ai-hint="night campus walk"
-      />
-       <div className="absolute inset-0 bg-black/30 z-10" />
-      <Card className="w-full max-w-md shadow-2xl z-20">
+    <div className="relative flex min-h-screen w-full items-center justify-center p-4">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/img.png"
+          alt="Illustration of a person walking on a campus at night, looking at their phone."
+          fill
+          className="object-cover"
+          data-ai-hint="night campus walk"
+        />
+        <div className="absolute inset-0 bg-black/30" />
+      </div>
+      <Card className="w-full max-w-md shadow-2xl z-20 bg-background/80 backdrop-blur-sm">
         <CardHeader className="text-center space-y-2">
            <div className="mx-auto flex items-center gap-3">
               <Logo className="w-10 h-10 text-primary" />
