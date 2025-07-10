@@ -8,8 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Send, User, Bot, Loader2 } from 'lucide-react';
 import { getSafetyChatResponse } from '@/ai/flows/safety-chat';
-import { Logo } from '@/components/logo';
 import { cn } from '@/lib/utils';
+import type { SafetyChatInput } from '@/ai/schemas/safety-chat-schema';
 
 
 interface Message {
@@ -48,14 +48,14 @@ export default function SafetyChatPage() {
     setIsLoading(true);
 
     try {
-      const history = messages.map(m => ({
+      const historyForAI: SafetyChatInput['history'] = messages.map(m => ({
         role: m.sender === 'user' ? 'user' : 'model',
         content: [{ text: m.text }]
       }));
       
       const response = await getSafetyChatResponse({
         question: input,
-        history: history,
+        history: historyForAI,
       });
 
       const botMessage: Message = { sender: 'bot', text: response };

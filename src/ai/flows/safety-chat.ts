@@ -4,23 +4,11 @@
  * @fileOverview A flow for handling safety-related chat conversations.
  *
  * - getSafetyChatResponse - A function that gets a response from the AI.
- * - SafetyChatInput - The input type for the getSafetyChatResponse function.
  */
 
 import { ai } from '@/ai/genkit';
-import { z, type Part } from 'genkit';
-
-export const SafetyChatInputSchema = z.object({
-  question: z.string().describe("The user's latest question or message."),
-  history: z.array(z.object({
-    role: z.enum(['user', 'model']),
-    content: z.array(z.object({
-        text: z.string()
-    }))
-  })).describe('The conversation history.'),
-});
-export type SafetyChatInput = z.infer<typeof SafetyChatInputSchema>;
-
+import { type Part } from 'genkit';
+import { SafetyChatInputSchema, type SafetyChatInput } from '@/ai/schemas/safety-chat-schema';
 
 export async function getSafetyChatResponse(input: SafetyChatInput): Promise<string> {
     const chatResponse = await safetyChatFlow(input);
