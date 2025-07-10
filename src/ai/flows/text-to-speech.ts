@@ -58,7 +58,7 @@ const textToSpeechFlow = ai.defineFlow(
           responseModalities: ['AUDIO'],
           speechConfig: {
             voiceConfig: {
-              prebuiltVoiceConfig: { voiceName: 'Alloy' }, // A friendly, clear voice
+              prebuiltVoiceConfig: { voiceName: 'achernar' }, // A friendly, clear voice
             },
           },
         },
