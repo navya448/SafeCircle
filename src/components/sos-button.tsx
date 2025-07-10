@@ -186,13 +186,13 @@ export function SOSButton() {
       />
       <div
         className={cn(
-          'relative w-40 h-40 md:w-48 md:h-48 rounded-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl',
+          'relative w-40 h-40 md:w-48 md:h-48 rounded-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl text-primary-foreground',
           {
-            'bg-destructive/80 hover:bg-destructive text-destructive-foreground': status === 'idle',
-            'bg-destructive scale-105 text-white': status === 'arming',
-            'bg-destructive animate-pulse text-white': status === 'sending',
-            'bg-green-500 text-white': status === 'sent',
-            'bg-gray-500 text-white': status === 'error',
+            'bg-purple hover:bg-purple/90': status === 'idle',
+            'bg-destructive scale-105': status === 'arming',
+            'bg-destructive animate-pulse': status === 'sending',
+            'bg-green-500': status === 'sent',
+            'bg-gray-500': status === 'error',
           }
         )}
       >
