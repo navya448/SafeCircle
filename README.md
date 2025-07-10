@@ -20,8 +20,14 @@ Navigating a university campus, especially one that is geographically isolated, 
 - **Next.js:** Frontend framework for building the user interface.
 - **React:** JavaScript library for building user interfaces.
 - **Tailwind CSS:** Utility-first CSS framework for styling.
-- **Genkit:** AI framework for safety insights and route planning.
 - **TypeScript:** Typed superset of JavaScript for improved code quality.
+
+## Google Technologies Used
+
+- **Google Gemini:** Powers the application's core AI capabilities, including the Safety Insights analysis and the conversational Safety Chat assistant.
+- **Genkit:** This open-source framework from Google simplifies the development and integration of the Gemini-powered AI flows.
+- **Firebase App Hosting:** The `apphosting.yaml` file is configured for seamless deployment and scaling of the Next.js application on Firebase, Google's mobile and web application development platform.
+- **Google Maps:** Used to generate location links for the SOS alerts, providing a quick and universally understood way to view a user's location.
 
 ## Installation
 
