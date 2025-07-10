@@ -1,5 +1,4 @@
 ## SafeCircle: Your Personal Safety Companion
-## SafeCircle: Your Personal Safety Companion
 
 SafeCircle is a comprehensive safety application built to empower users with tools and information to enhance their personal security. Whether you're navigating unfamiliar areas, need quick access to emergency contacts, or want to gain insights into potential risks, SafeCircle provides a centralized platform for your safety needs.
 
