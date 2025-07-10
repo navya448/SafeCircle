@@ -27,6 +27,7 @@ import {
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import { Logo } from '@/components/logo'
+import Image from 'next/image'
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -85,8 +86,16 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
-      <Card className="w-full max-w-md shadow-2xl">
+    <div className="flex items-center justify-center min-h-screen relative">
+      <Image 
+        src="https://placehold.co/1920x1080.png"
+        alt="Abstract background illustration"
+        fill
+        className="object-cover z-0"
+        data-ai-hint="abstract background"
+      />
+       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10" />
+      <Card className="w-full max-w-md shadow-2xl z-20">
         <CardHeader className="text-center space-y-2">
            <div className="mx-auto flex items-center gap-3">
               <Logo className="w-10 h-10 text-primary" />

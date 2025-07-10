@@ -168,7 +168,7 @@ export function SOSButton() {
   return (
     <>
     <div
-      className="relative w-64 h-64 md:w-72 md:h-72 rounded-full flex items-center justify-center select-none"
+      className="relative w-48 h-48 md:w-56 md:h-56 rounded-full flex items-center justify-center select-none mx-auto"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onTouchStart={(e) => { e.preventDefault(); handleMouseDown(); }}
@@ -186,18 +186,18 @@ export function SOSButton() {
       />
       <div
         className={cn(
-          'relative w-56 h-56 md:w-64 md:h-64 rounded-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl',
+          'relative w-40 h-40 md:w-48 md:h-48 rounded-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl',
           {
-            'bg-primary hover:bg-primary/90': status === 'idle',
-            'bg-destructive scale-105': status === 'arming',
-            'bg-destructive animate-pulse': status === 'sending',
-            'bg-green-500': status === 'sent',
-            'bg-gray-500': status === 'error',
+            'bg-accent-foreground/10 text-accent-foreground': status === 'idle',
+            'bg-destructive scale-105 text-white': status === 'arming',
+            'bg-destructive animate-pulse text-white': status === 'sending',
+            'bg-green-500 text-white': status === 'sent',
+            'bg-gray-500 text-white': status === 'error',
           }
         )}
       >
-        <Siren className="w-16 h-16 md:w-20 md:h-20 text-white" />
-        <span className="text-white font-bold text-xl md:text-2xl mt-2 text-center">{getButtonText()}</span>
+        <Siren className="w-12 h-12 md:w-16 md:h-16" />
+        <span className="font-bold text-lg md:text-xl mt-2 text-center">{getButtonText()}</span>
       </div>
     </div>
     <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
