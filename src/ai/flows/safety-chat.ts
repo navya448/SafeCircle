@@ -40,6 +40,11 @@ const safetyChatFlow = ai.defineFlow(
       `
     });
 
-    return output?.text ?? "I'm sorry, I couldn't come up with a response.";
+    const responseText = output?.text;
+    if (responseText && responseText.trim().length > 0) {
+      return responseText;
+    }
+    
+    return "I'm sorry, I couldn't come up with a response.";
   }
 );
