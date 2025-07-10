@@ -35,7 +35,7 @@ export default function DashboardPage() {
           <CardContent>
             <p className="text-muted-foreground mb-4">Find the safest path to your destination.</p>
             <Link href="/safe-route" passHref>
-              <Button className="w-full" variant="secondary">Plan Route</Button>
+              <Button className="w-full">Plan Route</Button>
             </Link>
           </CardContent>
         </Card>
@@ -50,7 +50,7 @@ export default function DashboardPage() {
           <CardContent>
             <p className="text-muted-foreground mb-4">Ask the AI assistant for safety advice.</p>
             <Link href="/safety-chat" passHref>
-              <Button className="w-full" variant="secondary">Start Chat</Button>
+              <Button className="w-full">Start Chat</Button>
             </Link>
           </CardContent>
         </Card>
@@ -65,7 +65,7 @@ export default function DashboardPage() {
           <CardContent>
             <p className="text-muted-foreground mb-4">Manage your trusted contacts for alerts.</p>
             <Link href="/contacts" passHref>
-              <Button className="w-full" variant="secondary">View Contacts</Button>
+              <Button className="w-full">View Contacts</Button>
             </Link>
           </CardContent>
         </Card>
@@ -80,7 +80,7 @@ export default function DashboardPage() {
           <CardContent>
             <p className="text-muted-foreground mb-4">Quick access to emergency services.</p>
             <Link href="/resources" passHref>
-              <Button className="w-full" variant="secondary">See Resources</Button>
+              <Button className="w-full">See Resources</Button>
             </Link>
           </CardContent>
         </Card>

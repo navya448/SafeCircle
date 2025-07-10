@@ -188,7 +188,7 @@ export function SOSButton() {
         className={cn(
           'relative w-40 h-40 md:w-48 md:h-48 rounded-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl',
           {
-            'bg-accent-foreground/10 text-accent-foreground': status === 'idle',
+            'bg-destructive/80 hover:bg-destructive text-destructive-foreground': status === 'idle',
             'bg-destructive scale-105 text-white': status === 'arming',
             'bg-destructive animate-pulse text-white': status === 'sending',
             'bg-green-500 text-white': status === 'sent',
