@@ -9,6 +9,7 @@
 import { ai } from '@/ai/genkit';
 import { type Part } from 'genkit';
 import { SafetyChatInputSchema, type SafetyChatInput } from '@/ai/schemas/safety-chat-schema';
+import { z } from 'genkit';
 
 export async function getSafetyChatResponse(input: SafetyChatInput): Promise<string> {
     const chatResponse = await safetyChatFlow(input);
