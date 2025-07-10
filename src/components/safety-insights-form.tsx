@@ -1,11 +1,12 @@
 
 "use client"
 
-import { useState, useImperativeHandle, forwardRef } from 'react'
+import { useState, useImperativeHandle, forwardRef, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { getSafetyInsights, type SafetyInsightsOutput } from '@/ai/flows/safety-insights'
+import { textToSpeech } from '@/ai/flows/text-to-speech'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -25,7 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { AlertTriangle, CheckCircle, Loader2 } from 'lucide-react'
+import { AlertTriangle, CheckCircle, Loader2, Volume2, Square } from 'lucide-react'
 import { Badge } from './ui/badge'
 import { cn } from '@/lib/utils'
 
@@ -43,6 +44,10 @@ export const SafetyInsightsForm = forwardRef<SafetyInsightsFormHandle, {}>((prop
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<SafetyInsightsOutput | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  const [audioLoading, setAudioLoading] = useState(false);
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,6 +68,12 @@ export const SafetyInsightsForm = forwardRef<SafetyInsightsFormHandle, {}>((prop
     setLoading(true)
     setResult(null)
     setError(null)
+    // Stop any previously playing audio
+    if (audioRef.current) {
+        audioRef.current.pause();
+        setAudioPlaying(false);
+        audioRef.current = null;
+    }
     try {
       const insights = await getSafetyInsights(values)
       setResult(insights)
@@ -71,6 +82,36 @@ export const SafetyInsightsForm = forwardRef<SafetyInsightsFormHandle, {}>((prop
       console.error(e)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handlePlayAudio = async () => {
+    if (!result) return;
+    
+    if (audioPlaying) {
+        audioRef.current?.pause();
+        setAudioPlaying(false);
+        return;
+    }
+
+    setAudioLoading(true);
+    try {
+        const fullText = `Risk level: ${result.riskLevel}. Factors: ${result.riskFactors}. Recommendations: ${result.recommendations}`;
+        const audioDataUri = await textToSpeech(fullText);
+        
+        const audio = new Audio(audioDataUri);
+        audioRef.current = audio;
+        audio.play();
+        setAudioPlaying(true);
+        audio.onended = () => {
+            setAudioPlaying(false);
+        };
+
+    } catch (e) {
+        console.error("Failed to generate or play audio", e);
+        setError("Sorry, couldn't generate audio summary.");
+    } finally {
+        setAudioLoading(false);
     }
   }
 
@@ -156,10 +197,12 @@ export const SafetyInsightsForm = forwardRef<SafetyInsightsFormHandle, {}>((prop
       {result && (
         <CardContent>
           <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
-            <h3 className="font-bold text-lg flex items-center justify-between">
-              <span>Assessment Result</span>
-              <RiskBadge level={result.riskLevel} />
-            </h3>
+            <div className="flex items-center justify-between">
+                <h3 className="font-bold text-lg">
+                Assessment Result
+                </h3>
+                <RiskBadge level={result.riskLevel} />
+            </div>
             
             <div>
               <h4 className="font-semibold">Risk Factors</h4>
@@ -169,6 +212,21 @@ export const SafetyInsightsForm = forwardRef<SafetyInsightsFormHandle, {}>((prop
               <h4 className="font-semibold">Recommendations</h4>
               <p className="text-sm text-muted-foreground">{result.recommendations}</p>
             </div>
+            <Button 
+                onClick={handlePlayAudio} 
+                disabled={audioLoading} 
+                variant="outline" 
+                className="w-full mt-4"
+            >
+                {audioLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : audioPlaying ? (
+                    <Square className="mr-2 h-4 w-4" />
+                ) : (
+                    <Volume2 className="mr-2 h-4 w-4" />
+                )}
+                {audioLoading ? 'Generating...' : audioPlaying ? 'Stop' : 'Listen to Summary'}
+            </Button>
           </div>
         </CardContent>
       )}
