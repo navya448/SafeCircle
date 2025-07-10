@@ -88,10 +88,11 @@ export default function SignUpPage() {
   return (
     <div className="flex items-center justify-center min-h-screen relative">
       <Image 
-        src="[GENERATED_IMAGE_URL]"
+        src="/img.png"
         alt="Illustration of a person walking on a campus at night, looking at their phone."
         fill
         className="object-cover z-0"
+        data-ai-hint="night campus walk"
       />
        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10" />
       <Card className="w-full max-w-md shadow-2xl z-20">
